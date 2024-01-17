@@ -1,64 +1,42 @@
 package tech.lucascatchlove.kanban.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "boards")
 public class Board {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(name = "name", nullable = false)
     private String name;
 
-    public Board() {
-
-    }
-
-    public Board(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User ownerId;
 
     public Integer getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Board board = (Board) o;
-
-        if (!id.equals(board.id)) return false;
-        return name.equals(board.name);
+    public User getOwnerId() {
+        return ownerId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Board{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public void setOwnerId(User ownerId) {
+        this.ownerId = ownerId;
     }
 }
